@@ -1,0 +1,84 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("journal");
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth();
+
+const monthName = now.toLocaleString("en-US", { month: "long" });
+
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+const journalMap = new Map(
+  posts.map((p) => [p.data.date.toString().slice(0, 10), p]),
+);
+
+const formatDate = (d: number) =>
+  `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+---
+
+<html>
+  <head>
+    <title>Calendar Blog</title>
+
+    <style>
+      body {
+        font-family: system-ui;
+        max-width: 900px;
+        margin: auto;
+        padding: 40px;
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+      }
+
+      .day {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        text-decoration: none;
+        color: black;
+      }
+
+      .has-post {
+        background: black;
+        color: white;
+      }
+
+      .title {
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="title">{monthName} {year}</div>
+
+    <div class="calendar">
+      {
+        Array.from({ length: daysInMonth }, (_, i) => {
+          const day = i + 1;
+          const dateStr = formatDate(day);
+
+          const hasPost = journalMap.has(dateStr);
+
+          return (
+            <a
+              class={`day ${hasPost ? "has-post" : ""}`}
+              href={`/journal/${dateStr}`}
+            >
+              {day}
+            </a>
+          );
+        })
+      }
+    </div>
+  </body>
+</html>
