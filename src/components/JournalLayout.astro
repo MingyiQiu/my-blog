@@ -1,0 +1,114 @@
+---
+import "../styles/global.css";
+import { Sun, Cloud, CloudRain, CloudSnow, CloudFog } from "lucide-react";
+import { Smile, Frown, CloudDrizzle, Meh } from "lucide-react";
+
+const { date, weather, temp, title, mood, lunch, dinner, thought } =
+  Astro.props;
+const weatherMap = {
+  sunny: Sun,
+  cloudy: Cloud,
+  rain: CloudRain,
+  snow: CloudSnow,
+  fog: CloudFog,
+};
+const moodMap = {
+  happy: Smile,
+  sad: Frown,
+  weary: CloudDrizzle,
+  calm: Meh,
+};
+
+const WeatherIcon = weatherMap[weather?.toLowerCase()] ?? Cloud;
+const MoodIcon = moodMap[mood?.toLowerCase()] ?? Meh;
+---
+
+<div class="min-h-screen bg-[#242425] text-white flex justify-center relative">
+  <!-- BACK -->
+  <div class="w-full max-w-5xl p-10">
+    <!-- HEADER SLOT -->
+    <div class="flex justify-between items-center mb-6">
+      <!-- LEFT: BACK (aligned with month title) -->
+      <a
+        href="/"
+        class="text-xl font-semibold tracking-wide hover:text-zinc-300 transition"
+      >
+        &larr; Back
+      </a>
+
+      <!-- RIGHT: empty placeholder to preserve layout -->
+      <div class="opacity-0 text-xl font-semibold tracking-wide">
+        placeholder
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="flex gap-10">
+      <!-- LEFT: ICON -->
+      <div class="w-28 shrink-0">
+        <!-- TODO ICON -->
+      </div>
+
+      <!-- RIGHT: CONTENT-->
+      <div class="flex-1">
+        <!-- TODO QUOTE -->
+        <div>
+          <p class="text-lg text-zinc-200 italic">
+            "The best way to predict the future is to invent it."
+          </p>
+          <p class="text-xs text-zinc-500 mt-2">&mdash; Alan Kay</p>
+        </div>
+
+        <!-- DIVIDER -->
+        <hr class="border-dashed border-zinc-700 my-8" />
+
+        <!-- META -->
+        <div class="space-y-2 text-xl text-zinc-300">
+          <div>
+            <span class="text-zinc-500">Date:&nbsp;&nbsp;</span>
+            {date}
+          </div>
+
+          <div class="flex items-center gap-2 whitespace-nowrap">
+            <span class="text-zinc-500">Weather:</span>
+            <WeatherIcon class="w-5 h-5 text-zinc-300" />
+          </div>
+
+          <div>
+            <span class="text-zinc-500">Temperature:&nbsp;&nbsp;</span>
+            {temp ?? "—"}
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-zinc-500">Mood:</span>
+            <MoodIcon class="w-5 h-5 text-zinc-300" />
+          </div>
+
+          <div>
+            <span class="text-zinc-500">Lunch:&nbsp;&nbsp;</span>
+            {lunch ?? "—"}
+          </div>
+
+          <div>
+            <span class="text-zinc-500">Dinner:&nbsp;&nbsp;</span>
+            {dinner ?? "—"}
+          </div>
+
+          <div>
+            <span class="text-zinc-500">Title:&nbsp;&nbsp;</span>
+            {title ?? "—"}
+          </div>
+
+          <div>
+            <span class="text-zinc-500">Thought:&nbsp;&nbsp;</span>
+            {thought ?? "—"}
+          </div>
+
+          <hr class="border-dashed border-zinc-700 my-8" />
+
+          <slot />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

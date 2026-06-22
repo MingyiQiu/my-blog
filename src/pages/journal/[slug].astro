@@ -2,14 +2,13 @@
 export const prerender = false;
 
 import { getCollection, render } from "astro:content";
+import JournalLayout from "../../components/JournalLayout.astro";
 
 const { slug } = Astro.params;
 
 const posts = await getCollection("journal");
-
 const post = posts.find((p) => p.id === slug);
 
-// 404
 if (!post) {
   return new Response(null, {
     status: 302,
@@ -22,15 +21,6 @@ if (!post) {
 const { Content } = await render(post);
 ---
 
-<html>
-  <body>
-    <a href="/">&larr; Back</a>
-
-    <h1>{post.data.title}</h1>
-    <p>{post.data.date?.toString()}</p>
-
-    <hr />
-
-    <Content />
-  </body>
-</html>
+<JournalLayout {...post.data}>
+  <Content />
+</JournalLayout>
