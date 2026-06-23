@@ -40,6 +40,29 @@ const startOffset = firstDay.getDay();
 const daysInMonth = new Date(year, month + 1, 0).getDate();
 
 const currentTheme = searchParams.get("theme") ?? "mondrian";
+
+// stat
+const dateSet = new Set(posts.map(p => p.data.date));
+// month
+const monthlyCount = Array.from(dateSet).filter(d =>
+  d.startsWith(`${year}-${String(month + 1).padStart(2, "0")}`)
+).length;
+// year 
+const yearlyCount = Array.from(dateSet).filter(d =>
+  d.startsWith(String(year))
+).length;
+//streak
+let streak = 0;
+
+const cursor = new Date();
+cursor.setHours(0, 0, 0, 0);
+
+while (true) {
+  const key = cursor.toLocaleDateString("en-CA");
+  if (!dateSet.has(key)) break;
+  streak++;
+  cursor.setDate(cursor.getDate() - 1);
+}
 ---
 
 <div class="min-h-screen bg-[#242425] text-white flex justify-center">
@@ -155,39 +178,123 @@ const currentTheme = searchParams.get("theme") ?? "mondrian";
           const color = pickColor(dateStr, themes[currentTheme].colors);
 
           return (
-            <a
-              href={`/journal/${dateStr}`}
-              class={`
-              h-20 rounded-xl border p-2 text-sm relative transition
-              flex flex-col justify-between
+            hasPost ? (
+              <a
+                href={`/journal/${dateStr}`}
+                class={`
+                  h-20 rounded-xl border p-2 text-sm relative transition
+                  flex flex-col justify-between
+                  hover:scale-[1.02]
 
-              ${
-                isToday
-                  ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 hover:border-blue-200 "
-                  : "bg-[#242425]/40 border-zinc-700 hover:bg-zinc-300/60 hover:border-zinc-500"
-              }
-                  hover:scale-[1.02]              
+                  ${
+                    isToday
+                      ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 hover:border-blue-200"
+                      : "bg-[#242425]/40 border-zinc-700 hover:bg-zinc-300/60 hover:border-zinc-500"
+                  }
 
-              ${isCurrentMonth ? "text-white" : "text-zinc-500"}
-              `}
-            >
-              <div class="flex items-center gap-2">
-                <span>{dayNumber}</span>
+                  ${isCurrentMonth ? "text-white" : "text-zinc-500"}
+                `}
+              >
+                <div class="flex items-center gap-2">
+                  <span>{dayNumber}</span>
 
-                {hasPost && (
                   <span
-                    class="absolute top-0 right-2 w-3 h-4 "
+                    class="absolute top-0 right-2 w-3 h-4"
                     style={{
                       backgroundColor: color,
                       clipPath: "polygon(0 0,100% 0,100% 100%,50% 80%,0 100%)",
                     }}
                   />
-                )}
+                </div>
+              </a>
+            ) : (
+              <div
+                class={`
+                  h-20 rounded-xl border p-2 text-sm relative
+                  flex flex-col justify-between
+                  cursor-default
+
+                  ${
+                    isToday
+                      ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 "
+                      : "bg-[#242425]/40 border-zinc-700"
+                  }
+
+                  ${isCurrentMonth ? "text-white" : "text-zinc-500"}
+                  
+                `}
+              >
+                <div class="flex items-center gap-2">
+                  <span>{dayNumber}</span>
+                </div>
               </div>
-            </a>
+            )
           );
         })
       }
+    </div>
+
+    <!-- HUD -->
+    <div class="mt-2 text-[11px] text-zinc-400">
+      <div class="flex items-center gap-6">
+
+        <!-- MONTH -->
+        <div class="flex items-center gap-2">
+          <span class="text-zinc-400">MONTH ENTRIES:</span>
+
+          <span class="text-zinc-300 text-sm">
+            {monthlyCount}
+          </span>
+
+          <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
+            <div
+              class="h-full"
+               style={{
+                width: `${Math.min((monthlyCount / 30) * 100, 100)}%`,
+                backgroundColor: themes[currentTheme].colors[0]
+              }}/>
+          </div>
+        </div>
+
+        <!-- YEAR -->
+        <div class="flex items-center gap-2">
+          <span class="text-zinc-400">YEAR ENTRIES:</span>
+
+          <span class="text-zinc-300 text-sm">
+            {yearlyCount}
+          </span>
+
+          <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-green-400"
+              style={{width:`${Math.min((yearlyCount / 365) * 100, 100)}%`,
+                backgroundColor: themes[currentTheme].colors[1]}}
+            />
+          </div>
+        </div>
+
+        <!-- STREAK -->
+        <div class="flex items-center gap-2">
+          <span class="text-zinc-400">STREAK:</span>
+
+          <span class="text-zinc-300 text-sm">
+            {streak}d
+          </span>
+
+          <div class="flex gap-1">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <div
+                class="w-1.5 h-3 rounded-sm bg-zinc-900"
+                style={{
+                  backgroundColor:
+                    i < Math.min(streak, 7)
+                      ? themes[currentTheme].colors[2]
+                      : undefined
+                }}/>))}
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

@@ -10,11 +10,11 @@ export const themes = {
   },
   monet: {
     name: "Monet",
-    colors: ["#5DADE2", "#58D68D", "#F5B041", "#AF7AC5"],
+    colors: ["#5DADE2", "#AF7AC5", "#F5B041", "#58D68D"],
   },
   vangogh: {
     name: "Van Gogh",
-    colors: ["#2E86AB", "#F4D35E", "#EE964B", "#C81D25"],
+    colors: ["#2E86AB", "#F4D35E", "#C81D25", "#EE964B"],
   },
 } satisfies Record<string, Theme>;
 
