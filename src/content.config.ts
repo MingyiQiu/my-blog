@@ -10,7 +10,7 @@ const journal = defineCollection({
     title: z.string().optional(),
     mood: z.string().optional(),
     lunch: z.string().optional(),
-    dinner: z.string().optional(),
+    water: z.number().int().min(0).max(10).default(0).optional(),
     thought: z.string().optional(),
   }),
 });

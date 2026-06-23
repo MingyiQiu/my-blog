@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import SeasonalOverlay from "../components/SeasonalOverlay.astro";
 import { getCollection } from "astro:content";
 import { themes } from "../themes";
 import { pickColor } from "../lib/color";
@@ -42,6 +43,8 @@ const currentTheme = searchParams.get("theme") ?? "mondrian";
 ---
 
 <div class="min-h-screen bg-[#242425] text-white flex justify-center">
+  <SeasonalOverlay />
+  
   <div class="w-full max-w-5xl p-10">
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-6">

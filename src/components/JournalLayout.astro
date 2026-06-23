@@ -8,12 +8,12 @@ import {
   CloudFog,
   CloudSun,
 } from "lucide-react";
-import { Smile, Frown, CloudDrizzle, Meh } from "lucide-react";
+import { Smile, Frown, CloudDrizzle, Meh, GlassWater } from "lucide-react";
 import { getIcon } from "../lib/icons";
 import { getQuote } from "../lib/quotes";
+import SeasonalOverlay from "./SeasonalOverlay.astro";
 
-const { date, weather, temp, title, mood, lunch, dinner, thought } =
-  Astro.props;
+const { date, weather, temp, title, mood, lunch, water, thought } = Astro.props;
 
 const { name, ascii } = getIcon(date ?? "whale");
 
@@ -36,9 +36,11 @@ const moodMap = {
 
 const WeatherIcon = weatherMap[weather?.toLowerCase()] ?? Cloud;
 const MoodIcon = moodMap[mood?.toLowerCase()] ?? Meh;
+const waterCount = Math.max(0, Number(water ?? 0));
 ---
 
 <div class="min-h-screen bg-[#242425] text-white flex justify-center relative">
+  <SeasonalOverlay />
   <!-- BACK -->
   <div class="w-full max-w-5xl p-10">
     <!-- HEADER SLOT -->
@@ -68,8 +70,7 @@ const MoodIcon = moodMap[mood?.toLowerCase()] ?? Meh;
                 class="w-20 h-20 rounded-2xl bg-zinc-800 flex items-center justify-center"
               >
                 <pre
-                  class="font-mono leading-none"
-                  style={`font-size:14px`}>{ascii}</pre>
+                  class="font-mono leading-none text-[14px] whitespace-pre">{ascii}</pre>
               </div>
             </div>
           </div>
@@ -115,9 +116,16 @@ const MoodIcon = moodMap[mood?.toLowerCase()] ?? Meh;
                 {lunch ?? "—"}
               </div>
 
-              <div>
-                <span class="text-zinc-500">Dinner:&nbsp;&nbsp;</span>
-                {dinner ?? "—"}
+              <div class="flex items-center gap-2">
+                <span class="text-zinc-500">Water:</span>
+
+                <div class="flex gap-1">
+                  {
+                    Array.from({ length: waterCount }).map((_, i) => (
+                      <GlassWater className="w-5 h-5" key={i} />
+                    ))
+                  }
+                </div>
               </div>
 
               <div>

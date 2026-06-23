@@ -4,14 +4,48 @@
   --color-primary: #242425;
 }
 
-body {
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Noto Color Emoji",
-    sans-serif;
+@theme {
+  --animate-fall: fall linear infinite;
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-10vh) translateX(0px) rotate(0deg);
+    }
+
+    25% {
+      transform: translateY(25vh) translateX(-20px) rotate(90deg);
+    }
+
+    50% {
+      transform: translateY(55vh) translateX(15px) rotate(180deg);
+    }
+
+    75% {
+      transform: translateY(85vh) translateX(-15px) rotate(270deg);
+    }
+
+    100% {
+      transform: translateY(120vh) translateX(20px) rotate(360deg);
+    }
+  }
+}
+
+@keyframes bubble {
+  0% {
+    transform: translateY(-10vh) translateX(0) scale(0.9);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(120vh) translateX(var(--drift)) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.animate-bubble {
+  animation: bubble linear infinite;
 }

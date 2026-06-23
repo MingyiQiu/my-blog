@@ -1,0 +1,14 @@
+---
+import { getSeason } from "../lib/season";
+import Sakura from "./Sakura.astro";
+import Leaves from "./Leaves.astro";
+import Bubble from "./Bubble.astro";
+import Snow from "./Snow.astro";
+
+const season = getSeason();
+---
+
+{season === "spring" && <Sakura />}
+{season === "summer" && <Bubble />}
+{season === "autumn" && <Leaves />}
+{season === "winter" && <Snow />}

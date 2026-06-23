@@ -1,0 +1,37 @@
+---
+const flakes = Array.from({ length: 14 }, () => ({
+  left: Math.random() * 100,
+  delay: Math.random() * 5 - 5,
+  duration: 20 + Math.random() * 10,
+  size: 14 + Math.random() * 20,
+  opacity: 0.45 + Math.random() * 0.3,
+  rotate: Math.random() * 360,
+}));
+---
+
+<div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+  {
+    flakes.map((f) => (
+      <svg
+        viewBox="0 0 24 24"
+        class="absolute -top-10 text-slate-100/80 animate-fall"
+        style={`
+          left:${f.left}%;
+          width:${f.size}px;
+          opacity:${f.opacity};
+          animation-delay:${f.delay}s;
+          animation-duration:${f.duration}s;
+        `}
+      >
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <line x1="12" y1="2" x2="12" y2="22" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <line x1="4" y1="4" x2="20" y2="20" />
+          <line x1="20" y1="4" x2="4" y2="20" />
+
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+        </g>
+      </svg>
+    ))
+  }
+</div>

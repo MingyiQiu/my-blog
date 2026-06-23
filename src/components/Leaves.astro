@@ -1,0 +1,57 @@
+---
+const leaves = Array.from({ length: 12 }, () => ({
+  left: Math.random() * 100,
+  delay: Math.random() * 6 - 6,
+  duration: 24 + Math.random() * 14,
+  size: 24 + Math.random() * 26,
+  opacity: 0.25 + Math.random() * 0.25,
+  rotate: Math.random() * 360,
+}));
+---
+
+<div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+  {
+    leaves.map((l) => (
+      <svg
+        viewBox="0 0 64 64"
+        fill="currentColor"
+        class="absolute -top-16 text-yellow-200 animate-fall"
+        style={`
+          left:${l.left}%;
+          top:${-10 - Math.random() * 60}%;
+          width:${l.size}px;
+          opacity:${l.opacity};
+          animation-delay:${l.delay}s;
+          animation-duration:${l.duration}s;
+          transform: rotate(${l.rotate}deg);
+        `}
+      >
+        <path
+          d="
+          M32 4
+          C20 10, 14 22, 18 34
+          C22 48, 32 52, 32 60
+          C32 52, 42 48, 46 34
+          C50 22, 44 10, 32 4
+          Z
+        "
+        />
+
+        <rect x="31" y="10" width="2" height="40" opacity="0.6" />
+
+        <path
+          d="M32 30 L18 28"
+          stroke="currentColor"
+          stroke-width="1"
+          opacity="0.35"
+        />
+        <path
+          d="M32 30 L46 28"
+          stroke="currentColor"
+          stroke-width="1"
+          opacity="0.35"
+        />
+      </svg>
+    ))
+  }
+</div>

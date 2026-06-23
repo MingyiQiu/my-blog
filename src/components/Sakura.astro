@@ -1,0 +1,72 @@
+---
+const petals = Array.from({ length: 14 }, () => ({
+  left: Math.random() * 100,
+
+  delay: Math.random() * 8 - 8,
+
+  duration: 22 + Math.random() * 14,
+
+  size: 18 + Math.random() * 26,
+
+  opacity: 0.25 + Math.random() * 0.35,
+
+  rotate: Math.random() * 360,
+
+  top: -20 - Math.random() * 80,
+}));
+---
+
+<div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+  {
+    petals.map((p) => (
+      <svg
+        viewBox="0 0 64 64"
+        fill="currentColor"
+        class="absolute text-pink-200 animate-fall"
+        style={`
+          left:${p.left}%;
+          top:${p.top}%;
+          width:${p.size}px;
+          opacity:${p.opacity};
+          animation-delay:${p.delay}s;
+          animation-duration:${p.duration}s;
+          transform: rotate(${p.rotate}deg);
+        `}
+      >
+        <g>
+          <ellipse cx="32" cy="16" rx="8" ry="14" />
+          <ellipse
+            cx="48"
+            cy="28"
+            rx="8"
+            ry="14"
+            transform="rotate(72 48 28)"
+          />
+          <ellipse
+            cx="42"
+            cy="48"
+            rx="8"
+            ry="14"
+            transform="rotate(144 42 48)"
+          />
+          <ellipse
+            cx="22"
+            cy="48"
+            rx="8"
+            ry="14"
+            transform="rotate(216 22 48)"
+          />
+          <ellipse
+            cx="16"
+            cy="28"
+            rx="8"
+            ry="14"
+            transform="rotate(288 16 28)"
+          />
+
+          <circle cx="32" cy="32" r="4" opacity="0.6" />
+        </g>
+      </svg>
+    ))
+  }
+</div>

@@ -1,0 +1,28 @@
+---
+const bubbles = Array.from({ length: 10 }, () => ({
+  left: Math.random() * 100,
+  delay: Math.random() * 6 - 6,
+  duration: 16 + Math.random() * 10,
+  size: 10 + Math.random() * 18,
+  drift: Math.random() * 40 - 20,
+}));
+---
+
+<div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+  {
+    bubbles.map((b) => (
+      <div
+        class="absolute rounded-full border border-sky-200/60 bg-sky-100/10 shadow-[0_0_12px_rgba(125,211,252,0.25)] animate-bubble"
+        style={`
+          left:${b.left}%;
+          top:-10%;
+          width:${b.size}px;
+          height:${b.size}px;
+          animation-delay:${b.delay}s;
+          animation-duration:${b.duration}s;
+          --drift:${b.drift}px;
+        `}
+      />
+    ))
+  }
+</div>
