@@ -64,240 +64,253 @@ while (true) {
   cursor.setDate(cursor.getDate() - 1);
 }
 ---
+<html lang="en">
+  <head>
+    <title>Journal Calendar</title>
 
-<div class="min-h-screen bg-[#242425] text-white flex justify-center">
-  <SeasonalOverlay />
-  
-  <div class="w-full max-w-5xl p-10">
-    <!-- HEADER -->
-    <div class="flex justify-between items-center mb-6">
-      <!-- Title -->
-      <div class="flex items-center gap-3" id="themePicker">
-        <div class="text-xl font-semibold tracking-wide">
-          {monthName}, {year}
-        </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="A simple calendar-based journal for capturing everyday moments. No long essays, no pressure—just a few words, a thought, or a memory. A quiet space to track life, one day at a time." />
 
-        <div class="relative flex items-center" id="themePanel">
-          <!-- trigger -->
-          <button id="themeBtn" class="w-8 h-8 flex items-center justify-center cursor-pointer">
-            <span class="pointer-events-none">
-              <Palette size={18} color="#60A5FA"/>
-            </span>
-          </button>
+  </head>
 
-          <!-- panel -->
-          <div
-            id="themeMenu"
-            class="absolute left-11 sm:left-10 top-0 flex gap-3 items-end origin-left scale-x-95 opacity-0 -translate-x-2 -mt-1"
-          >
-            {Object.entries(themes).map(([key, theme]) => (
-              <a
-                href={`/?y=${year}&m=${m}&theme=${key}`}
-                class={`flex flex-col items-center gap-0.5 px-1 py-1
-                  ${currentTheme === key
-                    ? "bg-white/20 shadow-md"
-                    : "hover:bg-white/5"
-                  }
-                `}  
-              >
-                <!-- name -->
-                <div class="text-[9px] text-zinc-300 leading-none text-center -mt-3">
-                  {theme.name}
-                </div>
+  <body>
+    <main class="min-h-screen bg-[#242425] text-white flex justify-center">
+      <SeasonalOverlay />
+      
+      <div class="w-full max-w-5xl p-10">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-6">
+          <!-- Title -->
+          <div class="flex items-center gap-3" id="themePicker">
+            <div class="text-xl font-semibold tracking-wide">
+              {monthName}, {year}
+            </div>
 
-                <!-- color bars -->
-                <div class="flex gap-0.5">
-                  {theme.colors.map((c) => (
-                    <div class="w-2.5 h-7" style={`background:${c}`} />
-                  ))}
-                  
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+            <div class="relative flex items-center" id="themePanel">
+              <!-- trigger -->
+              <button id="themeBtn" aria-label="Switch color theme" aria-expanded="false" aria-controls="themeMenu" class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                <span class="pointer-events-none">
+                  <Palette size={18} color="#60A5FA"/>
+                </span>
+              </button>
 
-      <!-- prev and next -->
-      <div class="flex gap-3 text-white text-3xl -mt-2">
-        <a
-          class="flex items-center justify-center w-8 h-8 hover:text-blue-400 active:scale-90 transition"
-          href={`/?y=${prev.y}&m=${prev.m}`}>&uarr;</a
-        >
-        <a
-          class="flex items-center justify-center w-8 h-8 hover:text-blue-400 active:scale-90 transition"
-          href={`/?y=${next.y}&m=${next.m}`}>&darr;</a
-        >
-      </div>
-    </div>
-
-    <!-- WEEK -->
-    <div class="grid grid-cols-7 text-center text-xs text-white mb-3">
-      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
-      <div>Thu</div><div>Fri</div><div>Sat</div>
-    </div>
-
-    <!-- CALENDAR -->
-    <div class="grid grid-cols-7 gap-2">
-      {
-        Array.from({ length: 42 }, (_, i) => {
-          const dayIndex = i - startOffset + 1;
-
-          let cellYear = year;
-          let cellMonth = month;
-          let dayNumber = dayIndex;
-
-          // prev month
-          if (dayNumber < 0 || dayNumber == 0) {
-            cellMonth = month - 1;
-            if (cellMonth < 0) {
-              cellMonth = 11;
-              cellYear = year - 1;
-            }
-            const prevDays = new Date(cellYear, cellMonth + 1, 0).getDate();
-            dayNumber = prevDays + dayNumber;
-          }
-
-          // next month
-          else if (dayNumber > daysInMonth) {
-            cellMonth = month + 1;
-            if (cellMonth > 11) {
-              cellMonth = 0;
-              cellYear = year + 1;
-            }
-            dayNumber = dayNumber - daysInMonth;
-          }
-
-          const dateStr = `${cellYear}-${String(cellMonth + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
-
-          const isCurrentMonth = cellYear === year && cellMonth === month;
-          const hasPost = journalMap.has(dateStr);
-          const isToday = dateStr === today;
-
-          
-          const color = pickColor(dateStr, themes[currentTheme].colors);
-
-          return (
-            hasPost ? (
-              <a
-                href={`/journal/${dateStr}`}
-                class={`
-                  h-20 rounded-xl border p-2 text-sm relative transition
-                  flex flex-col justify-between
-                  hover:scale-[1.02]
-
-                  ${
-                    isToday
-                      ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 hover:border-blue-200"
-                      : "bg-[#242425]/40 border-zinc-700 hover:bg-zinc-300/60 hover:border-zinc-500"
-                  }
-
-                  ${isCurrentMonth ? "text-white" : "text-zinc-500"}
-                `}
-              >
-                <div class="flex items-center gap-2">
-                  <span>{dayNumber}</span>
-
-                  <span
-                    class="absolute top-0 right-2 w-3 h-4"
-                    style={{
-                      backgroundColor: color,
-                      clipPath: "polygon(0 0,100% 0,100% 100%,50% 80%,0 100%)",
-                    }}
-                  />
-                </div>
-              </a>
-            ) : (
+              <!-- panel -->
               <div
-                class={`
-                  h-20 rounded-xl border p-2 text-sm relative
-                  flex flex-col justify-between
-                  cursor-default
-
-                  ${
-                    isToday
-                      ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 "
-                      : "bg-[#242425]/40 border-zinc-700"
-                  }
-
-                  ${isCurrentMonth ? "text-white" : "text-zinc-500"}
-                  
-                `}
+                id="themeMenu"
+                class="absolute left-11 sm:left-10 top-0 flex gap-3 items-end origin-left scale-x-95 opacity-0 -translate-x-2 -mt-1"
               >
-                <div class="flex items-center gap-2">
-                  <span>{dayNumber}</span>
-                </div>
+                {Object.entries(themes).map(([key, theme]) => (
+                  <a
+                    href={`/?y=${year}&m=${m}&theme=${key}`}
+                    class={`flex flex-col items-center gap-0.5 px-1 py-1
+                      ${currentTheme === key
+                        ? "bg-white/20 shadow-md"
+                        : "hover:bg-white/5"
+                      }
+                    `}  
+                  >
+                    <!-- name -->
+                    <div class="text-[9px] text-zinc-300 leading-none text-center -mt-3">
+                      {theme.name}
+                    </div>
+
+                    <!-- color bars -->
+                    <div class="flex gap-0.5">
+                      {theme.colors.map((c) => (
+                        <div class="w-2.5 h-7" style={`background:${c}`} />
+                      ))}
+                      
+                    </div>
+                  </a>
+                ))}
               </div>
-            )
-          );
-        })
-      }
-    </div>
+            </div>
+          </div>
 
-    <!-- HUD -->
-    <div class="mt-2 text-[11px] text-zinc-400">
-      <div class="flex items-center gap-6">
-
-        <!-- MONTH -->
-        <div class="flex items-center gap-2">
-          <span class="text-zinc-400">MONTH ENTRIES:</span>
-
-          <span class="text-zinc-300">
-            {monthlyCount}
-          </span>
-
-          <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
-            <div
-              class="h-full"
-               style={{
-                width: `${Math.min((monthlyCount / 30) * 100, 100)}%`,
-                backgroundColor: themes[currentTheme].colors[0]
-              }}/>
+          <!-- prev and next -->
+          <div class="flex gap-3 text-white text-3xl -mt-2">
+            <a
+              class="flex items-center justify-center w-8 h-8 hover:text-blue-400 active:scale-90 transition"
+              href={`/?y=${prev.y}&m=${prev.m}`}>&uarr;</a
+            >
+            <a
+              class="flex items-center justify-center w-8 h-8 hover:text-blue-400 active:scale-90 transition"
+              href={`/?y=${next.y}&m=${next.m}`}>&darr;</a
+            >
           </div>
         </div>
 
-        <!-- YEAR -->
-        <div class="flex items-center gap-2">
-          <span class="text-zinc-400">YEAR ENTRIES:</span>
-
-          <span class="text-zinc-300">
-            {yearlyCount}
-          </span>
-
-          <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-green-400"
-              style={{width:`${Math.min((yearlyCount / 365) * 100, 100)}%`,
-                backgroundColor: themes[currentTheme].colors[1]}}
-            />
-          </div>
+        <!-- WEEK -->
+        <div class="grid grid-cols-7 text-center text-xs text-white mb-3">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+          <div>Thu</div><div>Fri</div><div>Sat</div>
         </div>
 
-        <!-- STREAK -->
-        <div class="flex items-center gap-2">
-          <span class="text-zinc-400">STREAK:</span>
+        <!-- CALENDAR -->
+        <div class="grid grid-cols-7 gap-2">
+          {
+            Array.from({ length: 42 }, (_, i) => {
+              const dayIndex = i - startOffset + 1;
 
-          <span class="text-zinc-300">
-            {streak} d
-          </span>
+              let cellYear = year;
+              let cellMonth = month;
+              let dayNumber = dayIndex;
 
-          <div class="flex gap-1">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div
-                class="w-1.5 h-3 rounded-sm bg-zinc-900"
-                style={{
-                  backgroundColor:
-                    i < Math.min(streak, 7)
-                      ? themes[currentTheme].colors[2]
-                      : undefined
-                }}/>))}
-          </div>
+              // prev month
+              if (dayNumber < 0 || dayNumber == 0) {
+                cellMonth = month - 1;
+                if (cellMonth < 0) {
+                  cellMonth = 11;
+                  cellYear = year - 1;
+                }
+                const prevDays = new Date(cellYear, cellMonth + 1, 0).getDate();
+                dayNumber = prevDays + dayNumber;
+              }
+
+              // next month
+              else if (dayNumber > daysInMonth) {
+                cellMonth = month + 1;
+                if (cellMonth > 11) {
+                  cellMonth = 0;
+                  cellYear = year + 1;
+                }
+                dayNumber = dayNumber - daysInMonth;
+              }
+
+              const dateStr = `${cellYear}-${String(cellMonth + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+
+              const isCurrentMonth = cellYear === year && cellMonth === month;
+              const hasPost = journalMap.has(dateStr);
+              const isToday = dateStr === today;
+
+              
+              const color = pickColor(dateStr, themes[currentTheme].colors);
+
+              return (
+                hasPost ? (
+                  <a
+                    aria-label={`Journal entry ${dateStr}`}
+                    href={`/journal/${dateStr}`}
+                    class={`
+                      h-20 rounded-xl border p-2 text-sm relative transition
+                      flex flex-col justify-between
+                      hover:scale-[1.02]
+
+                      ${
+                        isToday
+                          ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 hover:border-blue-200"
+                          : "bg-[#242425]/40 border-zinc-700 hover:bg-zinc-300/60 hover:border-zinc-500"
+                      }
+
+                      ${isCurrentMonth ? "text-white" : "text-zinc-500"}
+                    `}
+                  >
+                    <div class="flex items-center gap-2">
+                      <span>{dayNumber}</span>
+
+                      <span
+                        class="absolute top-0 right-2 w-3 h-4"
+                        style={{
+                          backgroundColor: color,
+                          clipPath: "polygon(0 0,100% 0,100% 100%,50% 80%,0 100%)",
+                        }}
+                      />
+                    </div>
+                  </a>
+                ) : (
+                  <div
+                    class={`
+                      h-20 rounded-xl border p-2 text-sm relative
+                      flex flex-col justify-between
+                      cursor-default
+
+                      ${
+                        isToday
+                          ? "bg-[#0078D7]/40 border-blue-500 ring-1 ring-blue-500 "
+                          : "bg-[#242425]/40 border-zinc-700"
+                      }
+
+                      ${isCurrentMonth ? "text-white" : "text-zinc-500"}
+                      
+                    `}
+                  >
+                    <div class="flex items-center gap-2">
+                      <span>{dayNumber}</span>
+                    </div>
+                  </div>
+                )
+              );
+            })
+          }
         </div>
 
+        <!-- HUD -->
+        <div class="mt-2 text-[11px] text-zinc-400">
+          <div class="flex items-center gap-6">
+
+            <!-- MONTH -->
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-400">MONTH ENTRIES:</span>
+
+              <span class="text-zinc-300">
+                {monthlyCount}
+              </span>
+
+              <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
+                <div
+                  class="h-full"
+                  style={{
+                    width: `${Math.min((monthlyCount / 30) * 100, 100)}%`,
+                    backgroundColor: themes[currentTheme].colors[0]
+                  }}/>
+              </div>
+            </div>
+
+            <!-- YEAR -->
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-400">YEAR ENTRIES:</span>
+
+              <span class="text-zinc-300">
+                {yearlyCount}
+              </span>
+
+              <div class="w-24 h-1 bg-zinc-900 rounded-full overflow-hidden">
+                <div
+                  class="h-full bg-green-400"
+                  style={{width:`${Math.min((yearlyCount / 365) * 100, 100)}%`,
+                    backgroundColor: themes[currentTheme].colors[1]}}
+                />
+              </div>
+            </div>
+
+            <!-- STREAK -->
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-400">STREAK:</span>
+
+              <span class="text-zinc-300">
+                {streak} d
+              </span>
+
+              <div class="flex gap-1">
+                {Array.from({ length: 7 }).map((_, i) => (
+                  <div
+                    class="w-1.5 h-3 rounded-sm bg-zinc-900"
+                    style={{
+                      backgroundColor:
+                        i < Math.min(streak, 7)
+                          ? themes[currentTheme].colors[2]
+                          : undefined
+                    }}/>))}
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </body>
+</html>
 
 <script is:inline>
   document.addEventListener("DOMContentLoaded", () => {
@@ -312,6 +325,10 @@ while (true) {
       menu.style.transition = "all 220ms cubic-bezier(0.2, 0.8, 0.2, 1)";
       menu.style.transform = "translateX(0)";
       menu.style.opacity = "1";
+
+      btn.setAttribute("aria-expanded", "true");
+      menu.setAttribute("aria-hidden", "false");
+
       open = true;
     }
 
@@ -319,21 +336,24 @@ while (true) {
       menu.style.transition = "all 160ms ease";
       menu.style.transform = "translateX(-8px)";
       menu.style.opacity = "0";
+
+      btn.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
+
       open = false;
     }
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-
-      if (open) {
-        hide();
-      } else {
-        show();
-      }
+      open ? hide() : show();
     });
 
     document.addEventListener("click", () => {
       if (open) hide();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && open) hide();
     });
   });
 </script>

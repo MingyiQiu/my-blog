@@ -5,16 +5,16 @@ export const prerender = false;
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <base href="/" />
 
     <title>Not Found 404</title>
-
     <link rel="stylesheet" href="/404/css/404.css" />
-    <link rel="icon" type="image/png" href="/404/images/meteorite.png" />
+    <link rel="icon" href="/404/images/meteorite.png" />
 
-    <!-- Google tag -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1752YPLP7H"
     ></script>
+
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -26,41 +26,27 @@ export const prerender = false;
   </head>
 
   <body class="permission_denied">
-    <div id="tsparticles"></div>
+    <main>
+      <div id="tsparticles"></div>
 
-    <div class="denied__wrapper">
-      <h1>404</h1>
+      <div class="denied__wrapper">
+        <h1>404</h1>
 
-      <h3>
-        LOST IN <span>SPACE</span> My Blog? <br /><br />
-        Time to fire up the engines and
+        <h3>
+          LOST IN <span>SPACE</span> My Blog? <br /><br />
+          Time to fire up the engines and
+        </h3>
 
-        <a href="/">
-          <button class="denied__link" id="goHomeBtn">GO HOME</button>
-        </a>
-      </h3>
+        <a href="/" class="denied__link" aria-label="Go Home"> GO HOME </a>
 
-      <img id="astronaut" src="/404/images/astronaut.svg" />
-      <img id="planet" src="/404/images/planet.svg" />
-    </div>
+        <img id="astronaut" src="/404/images/astronaut.svg" />
+        <img id="planet" src="/404/images/planet.svg" />
+      </div>
+    </main>
 
     <script
       src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"
     ></script>
     <script src="/404/js/404.js" is:inline></script>
-
-    <script is:inline>
-      const btn = document.getElementById("goHomeBtn");
-
-      if (btn) {
-        btn.addEventListener("click", () => {
-          document.body.classList.add("launching");
-
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 1200);
-        });
-      }
-    </script>
   </body>
 </html>
