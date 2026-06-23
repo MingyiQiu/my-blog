@@ -8,7 +8,14 @@ import {
   CloudFog,
   CloudSun,
 } from "lucide-react";
-import { Smile, Frown, CloudDrizzle, Meh, GlassWater } from "lucide-react";
+import {
+  Smile,
+  Frown,
+  CloudDrizzle,
+  Meh,
+  Sparkles,
+  GlassWater,
+} from "lucide-react";
 import { getIcon } from "../lib/icons";
 import { getQuote } from "../lib/quotes";
 import SeasonalOverlay from "./SeasonalOverlay.astro";
@@ -31,6 +38,7 @@ const moodMap = {
   happy: Smile,
   sad: Frown,
   weary: CloudDrizzle,
+  surprised: Sparkles,
   calm: Meh,
 };
 
@@ -87,7 +95,7 @@ const waterCount = Math.max(0, Number(water ?? 0));
             </div>
 
             <!-- DIVIDER -->
-            <hr class="border-dashed border-zinc-700 my-8" />
+            <hr class="border-dashed border-zinc-700 my-4" />
 
             <!-- META -->
             <div class="space-y-2 text-xl text-zinc-300">
@@ -138,7 +146,7 @@ const waterCount = Math.max(0, Number(water ?? 0));
                 {thought ?? "—"}
               </div>
 
-              <hr class="border-dashed border-zinc-700 my-8" />
+              <hr class="border-dashed border-zinc-700 my-4" />
 
               <slot />
             </div>
