@@ -2,22 +2,15 @@
 
 A minimal, calendar-based journaling system focused on daily reflection, visual time awareness, and aesthetic seasonal themes.
 
-<br>
-<br>
-
 # 🛠 Tech Stack
 
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel)
-![Astro](https://img.shields.io/badge/Astro-000000?style=for-the-badge&logo=astro&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
-
-<br>
-<br>
+![Vercel](https://img.shields.io/badge/Vercel-4B6A88?style=flat-square&logo=vercel&logoColor=ffffff)
+![Astro](https://img.shields.io/badge/Astro-E0B64A?style=flat-square&logo=astro&logoColor=000000)
+![TypeScript](https://img.shields.io/badge/TypeScript-7C8F63?style=flat-square&logo=typescript&logoColor=ffffff)
+![JavaScript](https://img.shields.io/badge/JavaScript-4B6A88?style=flat-square&logo=javascript&logoColor=ffffff)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-E0B64A?style=flat-square&logo=tailwind-css&logoColor=000000)
+![HTML5](https://img.shields.io/badge/HTML5-7C8F63?style=flat-square&logo=html5&logoColor=ffffff)
+![CSS3](https://img.shields.io/badge/CSS3-4B6A88?style=flat-square&logo=css3&logoColor=ffffff)
 
 # ✨ Overview
 
@@ -31,9 +24,6 @@ It blends:
 - streak + progress tracking
 - expressive journal entries
 - custom 404 experience
-
-<br>
-<br>
 
 # 🗓 Calendar View
 
@@ -61,9 +51,6 @@ _Monthly calendar view with marked journal entries and seasonal background._
 
 </div>
 
-<br>
-<br>
-
 # 🎨 Theme System & Visual Stats
 
 The interface is driven by a unified theme system that dynamically controls both the calendar and the dashboard statistics, creating a consistent visual language across the entire experience.
@@ -90,9 +77,6 @@ _Theme system dynamically controls calendar indicators, progress bars, and strea
 
 </div>
 
-<br>
-<br>
-
 # 📓 Journal Page
 
 Each journal entry is intentionally minimal and atmospheric:
@@ -111,9 +95,6 @@ _Minimal journal layout featuring ASCII visuals and short reflective writing._
 
 </div>
 
-<br>
-<br>
-
 # 🚀 404 Page
 
 A custom animated 404 page with a space-themed design, including:
@@ -129,6 +110,3 @@ A custom animated 404 page with a space-themed design, including:
 _A space-themed animated 404 page with particle effects and a home button._
 
 </div>
-
-<br>
-<br>
