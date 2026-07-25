@@ -28,7 +28,7 @@ const monthName = new Date(year, month).toLocaleString("en-US", {
 const today = new Date().toLocaleDateString("en-CA");
 
 // journal map
-const journalMap = new Map(posts.map((p) => [p.data.date, true]));
+const journalMap = new Map(posts.map((p) => [p.data.date, p.data.date]));
 
 // prev / next mo\nth
 const prev = month === 0 ? { y: year - 1, m: 12 } : { y: year, m: m - 1 };
@@ -191,7 +191,7 @@ while (true) {
                 hasPost ? (
                   <a
                     aria-label={`Journal entry ${dateStr}`}
-                    href={`/journal/${dateStr}`}
+                    href={`/journal/${journalMap.get(dateStr)}`}
                     class={`
                       h-20 rounded-xl border p-2 text-sm relative transition
                       flex flex-col justify-between
