@@ -8,19 +8,12 @@ import {
   CloudFog,
   CloudSun,
 } from "lucide-react";
-import {
-  Smile,
-  Frown,
-  CloudDrizzle,
-  Meh,
-  Sparkles,
-  GlassWater,
-} from "lucide-react";
+import { Smile, Frown, CloudDrizzle, Meh, Sparkles } from "lucide-react";
 import { getIcon } from "../lib/icons";
 import { getQuote } from "../lib/quotes";
 import SeasonalOverlay from "./SeasonalOverlay.astro";
 
-const { date, weather, temp, title, mood, lunch, water, thought } = Astro.props;
+const { date, weather, temp, title, mood, lunch } = Astro.props;
 
 const { name, ascii } = getIcon(date ?? "whale");
 
@@ -44,7 +37,6 @@ const moodMap = {
 
 const WeatherIcon = weatherMap[weather?.toLowerCase()] ?? Cloud;
 const MoodIcon = moodMap[mood?.toLowerCase()] ?? Meh;
-const waterCount = Math.max(0, Number(water ?? 0));
 ---
 
 <div class="min-h-screen bg-[#242425] text-white flex justify-center relative">
@@ -124,26 +116,9 @@ const waterCount = Math.max(0, Number(water ?? 0));
                 {lunch ?? "—"}
               </div>
 
-              <div class="flex items-center gap-2">
-                <span class="text-zinc-500">Water:</span>
-
-                <div class="flex gap-1">
-                  {
-                    Array.from({ length: waterCount }).map((_, i) => (
-                      <GlassWater className="w-5 h-5" key={i} />
-                    ))
-                  }
-                </div>
-              </div>
-
               <div>
                 <span class="text-zinc-500">Title:&nbsp;&nbsp;</span>
                 {title ?? "—"}
-              </div>
-
-              <div>
-                <span class="text-zinc-500">Thought:&nbsp;&nbsp;</span>
-                {thought ?? "—"}
               </div>
 
               <hr class="border-dashed border-zinc-700 my-4" />
